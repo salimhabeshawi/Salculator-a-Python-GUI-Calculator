@@ -21,6 +21,11 @@ class CalcApp(QWidget):
 
         # All App Objects
         self.text_box = QLineEdit()
+        self.text_box.setStyleSheet(
+            """
+            padding: 10px;
+            """
+        )
         self.text_box.setFont(QFont("Helvetica", 32))
         self.main_grid = QGridLayout()
 
@@ -90,7 +95,7 @@ class CalcApp(QWidget):
         )
     # Functions
     def button_click(self):
-        btn = app.sender()
+        btn = self.sender()
         txt = btn.text()
 
         if txt == "=":
@@ -121,7 +126,7 @@ if __name__ == '__main__':
     main_window.setStyleSheet(
         """
         QWidget {
-            background-color: #123
+            background-color: #bcb4d5
         }
         """
     )
