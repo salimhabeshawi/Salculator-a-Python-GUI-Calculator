@@ -12,21 +12,36 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont
 
+
 class CalcApp(QWidget):
     def __init__(self):
         super().__init__()
         # Main App Objects and Settings
         self.setWindowTitle("Salculator")
-        self.resize(800, 1000)
+        self.resize(400, 600)
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #232946;
+            }
+        """)
 
         # All App Objects
         self.text_box = QLineEdit()
         self.text_box.setStyleSheet(
             """
-            padding: 10px;
+            QLineEdit {
+                background: #121629;
+                color: #eebbc3;
+                border: none;
+                border-radius: 12px;
+                padding: 18px;
+                font-size: 32px;
+                font-family: 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+                margin-bottom: 18px;
+            }
             """
         )
-        self.text_box.setFont(QFont("Helvetica", 32))
+        self.text_box.setFont(QFont("Segoe UI", 32))
         self.main_grid = QGridLayout()
 
         self.buttons = [
@@ -42,23 +57,56 @@ class CalcApp(QWidget):
         for text in self.buttons:
             button = QPushButton(text)
             button.clicked.connect(self.button_click)
-            button.setStyleSheet(
-                """
-                QPushButton {
-                    font: 25pt Comic Sans MS;
-                    padding: 10px;
-                }
-                """
-            )
+            button.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: #eebbc3;
+                    color: #232946;
+                    border: none;
+                    border-radius: 12px;
+                    font: 20pt 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+                    padding: 18px;
+                    margin: 6px;
+                    min-width: 60px;
+                    min-height: 60px;
+                    transition: background 0.2s;
+                }}
+                QPushButton:hover {{
+                    background-color: #f6c9c9;
+                }}
+                QPushButton:pressed {{
+                    background-color: #b8c1ec;
+                }}
+            """)
             self.main_grid.addWidget(button, row, col)
             col += 1
-
             if col > 3:
                 col = 0
                 row += 1
 
         self.clear = QPushButton("C")
         self.back = QPushButton("del")
+        for btn in [self.clear, self.back]:
+            btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #b8c1ec;
+                    color: #232946;
+                    border: none;
+                    border-radius: 12px;
+                    font: 18pt 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+                    padding: 16px 0;
+                    margin: 6px;
+                    min-width: 60px;
+                    min-height: 50px;
+                    transition: background 0.2s;
+                }
+                QPushButton:hover {
+                    background-color: #eebbc3;
+                }
+                QPushButton:pressed {
+                    background-color: #232946;
+                    color: #eebbc3;
+                }
+            """)
 
         # All Design
         master_layout = QVBoxLayout()
@@ -68,32 +116,19 @@ class CalcApp(QWidget):
         button_row = QHBoxLayout()
         button_row.addWidget(self.clear)
         button_row.addWidget(self.back)
+        button_row.setSpacing(16)
 
         master_layout.addLayout(button_row)
-        master_layout.setContentsMargins(25, 25, 25, 25)
+        master_layout.setContentsMargins(24, 24, 24, 24)
+        master_layout.setSpacing(18)
 
         self.setLayout(master_layout)
 
         # Events
         self.clear.clicked.connect(self.button_click)
         self.back.clicked.connect(self.button_click)
-        self.clear.setStyleSheet(
-            """
-            QPushButton {
-                font: 25pt Comic Sans MS;
-                padding: 10px;
-            }
-            """
-        )
-        self.back.setStyleSheet(
-            """
-            QPushButton {
-                font: 25pt Comic Sans MS;
-                padding: 10px;
-            }
-            """
-        )
     # Functions
+
     def button_click(self):
         btn = self.sender()
         txt = btn.text()
@@ -123,12 +158,6 @@ class CalcApp(QWidget):
 if __name__ == '__main__':
     app = QApplication([])
     main_window = CalcApp()
-    main_window.setStyleSheet(
-        """
-        QWidget {
-            background-color: #bcb4d5
-        }
-        """
-    )
+    # No need to set global stylesheet here, handled in widget styles
     main_window.show()
     app.exec_()
